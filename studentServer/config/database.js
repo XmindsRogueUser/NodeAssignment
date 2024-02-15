@@ -14,6 +14,6 @@ db.sequelize = sequelize;
 db.Student = require('../models/student')(sequelize, Sequelize);
 
 // sync all models with database
-sequelize.sync();
+sequelize.sync({ alter: true });
 
 module.exports = db;

@@ -26,10 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         age: {
           type: DataTypes.INTEGER,
         },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: 'ACTIVE'
+          },
       },
       {
         tableName: "student",
-        timestamps: false,
+        timestamps: true,
       }
     );
     return Student;
