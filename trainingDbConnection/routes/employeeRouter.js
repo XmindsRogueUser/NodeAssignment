@@ -3,7 +3,7 @@ const employeeController = require("../controller/employeeController");
 
 empRouter.get('/', async (req, res) => {
     try {
-        const employees = await employeeController.getAllEmployees();
+        const employees = await employeeController.getAllEmployees(req.query.id);
         res.status(200).json({ employees: employees });
     } catch (e) {
         console.log(e);

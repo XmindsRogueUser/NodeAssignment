@@ -1,8 +1,23 @@
 const db = require('../config/db');
 const Employee = db.Employee;
 
-async function getAllEmployees() {
-    const employees = await Employee.findAll();
+async function getAllEmployees(id) {
+    let employees = null;
+    if (id === undefined) {
+        employees = await Employee.findAll();
+    } else {
+        employees = await Employee.findByPk(id,  {
+            include: [ 
+              {
+                model: Profile ,
+                  
+                attributes: ["profileName", "rollNumber"],
+                 
+            
+              },
+            ],
+        });
+    }
     return employees;
 }
 
