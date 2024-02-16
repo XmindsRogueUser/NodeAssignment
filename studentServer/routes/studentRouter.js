@@ -1,6 +1,12 @@
 const studentRouter = require('express').Router();
 const studentController = require("../controllers/studentController");
 
+
+studentRouter.get('/', studentController.getStudents);
+studentRouter.post('/', studentController.createStudent);
+studentRouter.put('/', studentController.updateStudent);
+studentRouter.delete('/', studentController.deleteStudent);
+
 studentRouter.get('/', async (req, res) => {
     try {
         requestBody = req.query;
