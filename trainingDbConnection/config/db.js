@@ -16,6 +16,7 @@ db.sequelize = sequelize;
 db.Employee = require('../models/employee')(sequelize, Sequelize);
 db.Profile = require('../models/profile')(sequelize, Sequelize);
 db.Company = require('../models/company')(sequelize, Sequelize);
+db.Project = require('../models/project')(sequelize, Sequelize);
 
 /* table associations */
 db.Employee.hasOne(db.Profile, { foreignKey: "employeeId" });
@@ -27,7 +28,10 @@ db.Profile.belongsTo(db.Employee, { foreignKey: "employeeId" });
 db.Company.hasMany(db.Employee, { foreignKey: 'companyId' });
 db.Employee.belongsTo(db.Company, { foreignKey: 'companyId' });
 
+db.Employee.belongsToMany(db.Project, { through: 'employee_project' });
+db.Project.belongsToMany(db.Employee, { through: 'employee_project' });
+
 /* sync all models with database */
-sequelize.sync({ force: true, alter: true });
+sequelize.sync({ alter: true });
 
 module.exports = db;

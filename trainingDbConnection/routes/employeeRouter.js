@@ -14,7 +14,7 @@ empRouter.get('/', async (req, res) => {
 empRouter.post('/', async (req, res) => {
     try {
         requestBody = req.body;
-        const employees = await employeeController.createEmployees(requestBody.name, requestBody.designation, requestBody.email, requestBody.age, requestBody.companyId);
+        const employees = await employeeController.createEmployees(requestBody.name, requestBody.designation, requestBody.email, requestBody.age, requestBody.companyId, requestBody.projectName);
         res.status(200).json({ employees: employees });
     } catch (e) {
         console.log(e);

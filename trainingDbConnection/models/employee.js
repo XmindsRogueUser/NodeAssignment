@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, allowNull: false },
       designation: { type: DataTypes.STRING },
       age: { type: DataTypes.INTEGER },
-      companyId: { type: DataTypes.BIGINT, allowNull: false },
+      companyId: { type: DataTypes.BIGINT, allowNull: false }
     },
     {
       tableName: "employee",
