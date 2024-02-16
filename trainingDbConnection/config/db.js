@@ -15,17 +15,19 @@ db.sequelize = sequelize;
 /* init the Employee model and add it to the exported db object */
 db.Employee = require('../models/employee')(sequelize, Sequelize);
 db.Profile = require('../models/profile')(sequelize, Sequelize);
+db.Company = require('../models/company')(sequelize, Sequelize);
 
 /* table associations */
-// db.Employee.hasOne(db.Profile,);
-// db.Profile.belongsTo(db.Employee);
 db.Employee.hasOne(db.Profile, { foreignKey: "employeeId" });
 db.Profile.belongsTo(db.Employee, { foreignKey: "employeeId" });
+// can also be writted like 
+// db.Employee.hasOne(db.Profile,);
+// db.Profile.belongsTo(db.Employee);
 
-// console.log("=======our db===========");
-// console.log(db);
+db.Company.hasMany(db.Employee, { foreignKey: 'companyId' });
+db.Employee.belongsTo(db.Company, { foreignKey: 'companyId' });
 
 /* sync all models with database */
-sequelize.sync({ alter: true });
+sequelize.sync({ force: true, alter: true });
 
 module.exports = db;

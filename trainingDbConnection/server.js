@@ -4,6 +4,7 @@ const cors = require('cors');
 const db = require('./config/db');
 const config = require('./config/config.js');
 const empRouter = require('./routes/employeeRouter.js');
+const compRouter = require('./routes/companyRouter.js');
 
 const sequelize = db.sequelize;
 const app = express();
@@ -11,9 +12,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/employee', empRouter);
+app.use('/company', compRouter);
 
-// home
-app.get('/home', async (req, res) => {
+/* Home */
+app.get('/', async (req, res) => {
   console.log("home")
   res.send("Home")
 });

@@ -6,26 +6,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      designation: {
-        type: DataTypes.STRING,
-      },
-      age: {
-        type: DataTypes.INTEGER,
-      },
+      name: { type: DataTypes.STRING, allowNull: false },
+      email: { type: DataTypes.STRING, allowNull: false },
+      designation: { type: DataTypes.STRING },
+      age: { type: DataTypes.INTEGER },
+      companyId: { type: DataTypes.BIGINT, allowNull: false },
     },
     {
       tableName: "employee",
-      timestamps: false,
+      timestamps: true,
     }
   );
   return Employee;

@@ -8,7 +8,7 @@
     "sequelize": "^6.37.0"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "name": "trainingdbconnection",
   "version": "1.0.0",
