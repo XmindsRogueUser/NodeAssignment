@@ -1,20 +1,22 @@
 const db = require("../config/Database");
 const Skill = db.Skill;
 
-getSkills = async (req, res) => {
+listSkills = async (req, res) => {
+  let skill = await Skill.findAll();
+  res.status(200).json({ skill: skill });
+};
+
+getSkill = async (req, res) => {
   try {
     let skill = null;
-    if (req.query.id === undefined) {
-      skill = await Skill.findAll();
+    if (req.query.id === undefined || req.query.id === null) {
+      res.status(400).end("Please provide an ID");
+      return;
     } else {
       skill = await Skill.findByPk(req.query.id);
     }
     if (skill == null) {
       res.status(400).end("No skill found with id " + req.query.id);
-      return;
-    }
-    if (skill == 0) {
-      res.status(400).end("Database is empty");
       return;
     }
     res.status(200).json({ skill: skill });
@@ -70,4 +72,4 @@ deleteSkill = async (req, res) => {
   }
 };
 
-module.exports = { getSkills, createSkill, updateSkill, deleteSkill };
+module.exports = { listSkills, getSkill, createSkill, updateSkill, deleteSkill };

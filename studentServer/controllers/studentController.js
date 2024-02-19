@@ -4,27 +4,33 @@ const Profile = db.Profile;
 const Skill = db.Skill;
 const Teacher = db.Teacher;
 
-getStudents = async (req, res) => {
+listStudents = async (req, res) => {
+  let student = await Student.findAll({
+    include: [
+      {
+        model: Profile,
+        attributes: ["profileName", "status", "bio", "profileImage"],
+      },
+      {
+        model: Skill,
+        attributes: ["skillName"],
+      },
+      {
+        model: Teacher,
+        attributes: ["firstName", "lastName", "subject"],
+        through: { attributes: [] },
+      },
+    ],
+  });
+  res.status(200).json({ student: student });
+}
+
+getStudent = async (req, res) => {
   try {
     let student = null;
-    if (req.query.id === undefined) {
-      student = await Student.findAll({
-        include: [
-          {
-            model: Profile,
-            attributes: ["profileName", "status", "bio", "profileImage"],
-          },
-          {
-            model: Skill,
-            attributes: ["skillName"],
-          },
-          {
-            model: Teacher,
-            attributes: ["firstName", "lastName", "subject"],
-            through: { attributes: [] },
-          },
-        ],
-      });
+    if (req.query.id === undefined || req.query.id === null) {
+      res.status(400).end("Please provide an ID");
+      return;
     } else {
       student = await Student.findByPk(req.query.id, {
         include: [
@@ -45,10 +51,6 @@ getStudents = async (req, res) => {
     }
     if (student == null) {
       res.status(400).end("No student found with id " + requestBody.id);
-      return;
-    }
-    if (student == 0) {
-      res.status(400).end("Database is empty");
       return;
     }
     res.status(200).json({ student: student });
@@ -172,7 +174,8 @@ deleteStudent = async (req, res) => {
 };
 
 module.exports = {
-  getStudents,
+  listStudents,
+  getStudent,
   createStudent,
   updateStudent,
   assignTeacher,
