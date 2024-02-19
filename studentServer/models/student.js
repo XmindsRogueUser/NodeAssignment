@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       firstName: { type: DataTypes.STRING, allowNull: false },
-      lastName: { type: DataTypes.STRING, allowNull: false },
+      lastName: { type: DataTypes.STRING, allowNull: true },
       rollNumber: { type: DataTypes.STRING, allowNull: false },
       grade: { type: DataTypes.STRING },
       age: { type: DataTypes.INTEGER },
-      skillId: {type: DataTypes.BIGINT, allowNull: false}
+      skillId: { type: DataTypes.BIGINT, allowNull: true },
     },
     {
       tableName: "student",
