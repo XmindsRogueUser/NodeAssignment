@@ -6,26 +6,26 @@ const Skill = db.Skill;
 
 listTeachers = async (req, res) => {
   let teacher = await Teacher.findAll({
-  include: [
-    {
-      model: Student,
-      attributes: ["firstName", "lastName", "rollNumber", "grade", "age"],
-      through: { attributes: [] },
-      include: [
-        {
-          model: Profile,
-          attributes: ["profileName", "status", "bio", "profileImage"],
-        },
-        {
-          model: Skill,
-          attributes: ["skillName"],
-        },
-      ],
-    },
-  ],
-});
-res.status(200).json({ teacher: teacher });
-}
+    include: [
+      {
+        model: Student,
+        attributes: ["firstName", "lastName", "rollNumber", "grade", "age"],
+        through: { attributes: [] },
+        include: [
+          {
+            model: Profile,
+            attributes: ["profileName", "status", "bio", "profileImage"],
+          },
+          {
+            model: Skill,
+            attributes: ["skillName"],
+          },
+        ],
+      },
+    ],
+  });
+  res.status(200).json({ teacher: teacher });
+};
 
 getTeacher = async (req, res) => {
   try {
@@ -34,7 +34,25 @@ getTeacher = async (req, res) => {
       res.status(400).end("Please provide an ID");
       return;
     } else {
-      teacher = await Teacher.findByPk(req.query.id);
+      teacher = await Teacher.findByPk(req.query.id, {
+        include: [
+          {
+            model: Student,
+            attributes: ["firstName", "lastName", "rollNumber", "grade", "age"],
+            through: { attributes: [] },
+            include: [
+              {
+                model: Profile,
+                attributes: ["profileName", "status", "bio", "profileImage"],
+              },
+              {
+                model: Skill,
+                attributes: ["skillName"],
+              },
+            ],
+          },
+        ],
+      });
     }
     if (teacher == null) {
       res.status(400).end("No teacher found with id " + req.query.id);
@@ -100,4 +118,10 @@ deleteTeacher = async (req, res) => {
   }
 };
 
-module.exports = { listTeachers, getTeacher, createTeacher, updateTeacher, deleteTeacher };
+module.exports = {
+  listTeachers,
+  getTeacher,
+  createTeacher,
+  updateTeacher,
+  deleteTeacher,
+};
