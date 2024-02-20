@@ -1,4 +1,5 @@
 const db = require("../config/Database");
+const logger = require("../config/Logger.js");
 const Skill = db.Skill;
 
 listSkills = async (req, res) => {
@@ -21,7 +22,7 @@ getSkill = async (req, res) => {
     }
     res.status(200).json({ skill: skill });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
@@ -34,7 +35,7 @@ createSkill = async (req, res) => {
     });
     res.status(200).json({ skill: skill });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
@@ -49,7 +50,7 @@ updateSkill = async (req, res) => {
     const skill = await Skill.update({ skillName }, { where: { skillId: id } });
     res.status(200).json({ skill: skill });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
@@ -67,9 +68,15 @@ deleteSkill = async (req, res) => {
     }
     res.status(200).json({ numberOfSkillsDeleted: skill });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
 
-module.exports = { listSkills, getSkill, createSkill, updateSkill, deleteSkill };
+module.exports = {
+  listSkills,
+  getSkill,
+  createSkill,
+  updateSkill,
+  deleteSkill,
+};

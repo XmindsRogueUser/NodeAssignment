@@ -1,27 +1,42 @@
-const express = require('express');
-const cors = require('cors');
-const db = require('./config/Database.js');
-const configuration = require('./config/Config.js');
-const studentRouter = require('./routes/StudentRouter.js');
-const skillRouter = require('./routes/SkillRouter.js');
-const teacherRouter = require('./routes/TeacherRouter.js');
+const express = require("express");
+const cors = require("cors");
+const db = require("./config/Database.js");
+const configuration = require("./config/Config.js");
+const studentRouter = require("./routes/StudentRouter.js");
+const skillRouter = require("./routes/SkillRouter.js");
+const teacherRouter = require("./routes/TeacherRouter.js");
+const logger = require("./config/Logger.js");
 
 const sequelize = db.sequelize;
 const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/student', studentRouter);
-app.use('/skill', skillRouter);
-app.use('/teacher', teacherRouter);
+app.use((req, res, done) => {
+  logger.info("Incomming API request : " + req.originalUrl);
+  done();
+  if (res.status != 200) {
+    logger.error(
+      "API failed to create response(Status:" +
+        res.statusCode +
+        ", URI: " +
+        req.originalUrl +
+        ")"
+    );
+  }
+});
+app.use("/student", studentRouter);
+app.use("/skill", skillRouter);
+app.use("/teacher", teacherRouter);
 
 // Authenticate and test DB connection.
-sequelize.authenticate()
+sequelize
+  .authenticate()
   .then(() => {
-    console.log('Connection has been established successfully.');
+    logger.info("Connection has been established successfully.");
   })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
+  .catch((err) => {
+    logger.error("Unable to connect to the database:", err);
   });
 
 // Start server

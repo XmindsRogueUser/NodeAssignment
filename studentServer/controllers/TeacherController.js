@@ -1,4 +1,5 @@
 const db = require("../config/Database");
+const logger = require("../config/Logger.js")
 const Teacher = db.Teacher;
 const Student = db.Student;
 const Profile = db.Profile;
@@ -60,7 +61,7 @@ getTeacher = async (req, res) => {
     }
     res.status(200).json({ teacher: teacher });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
@@ -77,7 +78,7 @@ createTeacher = async (req, res) => {
     });
     res.status(200).json({ teacher: teacher });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
@@ -95,7 +96,7 @@ updateTeacher = async (req, res) => {
     );
     res.status(200).json({ teacher: teacher });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
@@ -113,7 +114,7 @@ deleteTeacher = async (req, res) => {
     }
     res.status(200).json({ numberOfTeacherDeleted: teacher });
   } catch (e) {
-    console.log(e);
+    logger.error("An Internal server error occured " + e);
     res.sendStatus(500);
   }
 };
