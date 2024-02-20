@@ -15,7 +15,7 @@ db.Student = require("../models/Student.js")(sequelize, Sequelize);
 db.Profile = require("../models/Profile.js")(sequelize, Sequelize);
 db.Skill = require("../models/Skill.js")(sequelize, Sequelize);
 db.Teacher = require("../models/Teacher.js")(sequelize, Sequelize);
-db.User = require("../models/User.js")(sequelize, Sequelize);
+db.Role = require("../models/Role.js")(sequelize, Sequelize);
 
 /* table associations */
 db.Student.hasOne(db.Profile, { foreignKey: "studentId" });
@@ -23,6 +23,9 @@ db.Profile.belongsTo(db.Student, { foreignKey: "studentId" });
 
 db.Skill.hasMany(db.Student, { foreignKey: "skillId" });
 db.Student.belongsTo(db.Skill, { foreignKey: "skillId" });
+
+db.Role.hasMany(db.Student, { foreignKey: "useRole" });
+db.Student.belongsTo(db.Role, { foreignKey: "useRole" });
 
 db.Student.belongsToMany(db.Teacher, { through: "StudentTeacherMapping" });
 db.Teacher.belongsToMany(db.Student, { through: "StudentTeacherMapping" });

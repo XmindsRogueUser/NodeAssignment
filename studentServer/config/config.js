@@ -17,4 +17,8 @@ module.exports = {
     acquire: process.env.ACQUIRE,
     idle: process.env.IDLE,
   },
+  jwt: {
+    secret: process.env.TOKEN_SECRET,
+    expireTime: process.env.JWT_EXPIRE,
+  },
 };

@@ -1,5 +1,8 @@
 const db = require("../config/Database");
-const logger = require("../config/Logger.js")
+const logger = require("../config/Logger.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const config = require("../config/Config.js");
 const Student = db.Student;
 const Profile = db.Profile;
 const Skill = db.Skill;
@@ -24,7 +27,7 @@ listStudents = async (req, res) => {
     ],
   });
   res.status(200).json({ student: student });
-}
+};
 
 getStudent = async (req, res) => {
   try {
@@ -63,7 +66,23 @@ getStudent = async (req, res) => {
 
 createStudent = async (req, res) => {
   try {
-    var { firstName, lastName, rollNumber, grade, skillId, age } = req.body;
+    var {
+      firstName,
+      lastName,
+      rollNumber,
+      grade,
+      skillId,
+      age,
+      email,
+      password,
+      roleId,
+    } = req.body;
+    let encriptedPassword = bcrypt.hashSync(password, 8);
+    // If no roles provided, set the user role to 1
+    if (!roleId) {
+      roleId = 1;
+      logger.warn("Student role not found, setting default role!");
+    }
     const student = await Student.create({
       firstName,
       lastName,
@@ -71,6 +90,9 @@ createStudent = async (req, res) => {
       grade,
       age,
       skillId,
+      email,
+      password: encriptedPassword,
+      useRole: roleId,
     });
     let profileName = firstName + " " + lastName;
     const profile = await Profile.create({
@@ -79,6 +101,7 @@ createStudent = async (req, res) => {
       bio: null,
       profileImage: null,
     });
+
     res.status(200).json({ student: student, profile: profile });
   } catch (e) {
     logger.error("An Internal server error occured " + e);
@@ -174,6 +197,26 @@ deleteStudent = async (req, res) => {
   }
 };
 
+signIn = async (req, res) => {
+  const appUser = await Student.findOne({ where: { email: req.body.email } });
+  if (appUser == null) {
+    res.status(400).end("Student not found");
+    return;
+  }
+  const match = await bcrypt.compare(req.body.password, appUser.password);
+  logger.info(config.jwt.expireTime + " --> " + config.jwt.secret);
+  const accessToken = jwt.sign({ userId: appUser.id }, config.jwt.secret, {
+    algorithm: "HS256",
+    allowInsecureKeySizes: true,
+    expiresIn: config.jwt.expireTime,
+  });
+  if (match) {
+    res.json({ accessToken: accessToken });
+  } else {
+    res.json({ message: "Invalid Credentials" });
+  }
+};
+
 module.exports = {
   listStudents,
   getStudent,
@@ -181,4 +224,5 @@ module.exports = {
   updateStudent,
   assignTeacher,
   deleteStudent,
+  signIn,
 };
