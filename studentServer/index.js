@@ -5,6 +5,7 @@ const configuration = require("./config/Config.js");
 const studentRouter = require("./routes/StudentRouter.js");
 const skillRouter = require("./routes/SkillRouter.js");
 const teacherRouter = require("./routes/TeacherRouter.js");
+const userRouter = require("./routes/UserRouter.js");
 const logger = require("./config/Logger.js");
 
 const sequelize = db.sequelize;
@@ -28,6 +29,7 @@ app.use((req, res, done) => {
 app.use("/student", studentRouter);
 app.use("/skill", skillRouter);
 app.use("/teacher", teacherRouter);
+app.use("/user", userRouter);
 
 // Authenticate and test DB connection.
 sequelize

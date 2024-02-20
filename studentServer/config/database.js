@@ -15,6 +15,7 @@ db.Student = require("../models/Student.js")(sequelize, Sequelize);
 db.Profile = require("../models/Profile.js")(sequelize, Sequelize);
 db.Skill = require("../models/Skill.js")(sequelize, Sequelize);
 db.Teacher = require("../models/Teacher.js")(sequelize, Sequelize);
+db.User = require("../models/User.js")(sequelize, Sequelize);
 
 /* table associations */
 db.Student.hasOne(db.Profile, { foreignKey: "studentId" });
