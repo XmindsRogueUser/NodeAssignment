@@ -1,4 +1,4 @@
-const db = require("../config/Database");
+const db = require("../config/Database.js");
 const logger = require("../config/Logger.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -7,6 +7,7 @@ const Student = db.Student;
 const Profile = db.Profile;
 const Skill = db.Skill;
 const Teacher = db.Teacher;
+const Role = db.Role;
 
 listStudents = async (req, res) => {
   let student = await Student.findAll({
@@ -83,6 +84,13 @@ createStudent = async (req, res) => {
       roleId = 1;
       logger.warn("Student role not found, setting default role!");
     }
+    const userRole = await Role.findAll({ where: { id: roleId } });
+    if (userRole.length == 0) {
+      res
+        .status(400)
+        .json({ message: "no role found associated with id provided id" });
+      return;
+    }
     const student = await Student.create({
       firstName,
       lastName,
@@ -92,8 +100,8 @@ createStudent = async (req, res) => {
       skillId,
       email,
       password: encriptedPassword,
-      useRole: roleId,
     });
+    student.setRoles(userRole);
     let profileName = firstName + " " + lastName;
     const profile = await Profile.create({
       studentId: student.id,

@@ -24,11 +24,11 @@ db.Profile.belongsTo(db.Student, { foreignKey: "studentId" });
 db.Skill.hasMany(db.Student, { foreignKey: "skillId" });
 db.Student.belongsTo(db.Skill, { foreignKey: "skillId" });
 
-db.Role.hasMany(db.Student, { foreignKey: "useRole" });
-db.Student.belongsTo(db.Role, { foreignKey: "useRole" });
+db.Student.belongsToMany(db.Teacher, { through: "student_teacher_mapping" });
+db.Teacher.belongsToMany(db.Student, { through: "student_teacher_mapping" });
 
-db.Student.belongsToMany(db.Teacher, { through: "StudentTeacherMapping" });
-db.Teacher.belongsToMany(db.Student, { through: "StudentTeacherMapping" });
+db.Student.belongsToMany(db.Role, { through: "student_role_mapping" });
+db.Role.belongsToMany(db.Student, { through: "student_role_mapping" });
 
 // sync all models with database
 sequelize.sync({ alter: true });

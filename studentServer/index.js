@@ -6,6 +6,7 @@ const studentRouter = require("./routes/StudentRouter.js");
 const skillRouter = require("./routes/SkillRouter.js");
 const teacherRouter = require("./routes/TeacherRouter.js");
 const logger = require("./config/Logger.js");
+const {verifyToken} = require("./middleware/Authorization.js");
 
 const sequelize = db.sequelize;
 const app = express();
@@ -26,8 +27,8 @@ app.use((req, res, done) => {
   }
 });
 app.use("/student", studentRouter);
-app.use("/skill", skillRouter);
-app.use("/teacher", teacherRouter);
+app.use("/skill", verifyToken, skillRouter);
+app.use("/teacher", verifyToken, teacherRouter);
 
 // Authenticate and test DB connection.
 sequelize

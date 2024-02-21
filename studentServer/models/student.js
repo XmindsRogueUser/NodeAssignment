@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       age: { type: DataTypes.INTEGER },
       skillId: { type: DataTypes.BIGINT, allowNull: true },
       email: { type: DataTypes.STRING, allowNull: false },
-      password: { type: DataTypes.STRING, allowNull: false },
-      useRole: { type: DataTypes.BIGINT, allowNull: true },
+      password: { type: DataTypes.STRING, allowNull: false }
     },
     {
       tableName: "student",
